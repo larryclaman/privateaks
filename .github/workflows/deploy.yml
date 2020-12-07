@@ -1,0 +1,35 @@
+#
+name: DeployToAKS
+
+on:
+  workflow_dispatch:
+
+env:
+  AZURE_AKS_NAME: aksCluster1
+  AZURE_AKS_RG: privateaks
+  NAMESPACE: vote
+
+jobs:
+  deploy:
+    name: Deploy to AKS
+    runs-on: self-hosted ## THIS IS WHERE WE SET THE PRIVATE RUNNER
+    steps:
+      - uses: actions/checkout@v2
+
+      # Set the target AKS cluster.
+      - uses: Azure/aks-set-context@v1
+        with:
+          creds: "${{ secrets.AZURE_AKS_CREDENTIALS }}"
+          cluster-name: ${{env.AZURE_AKS_NAME }}
+          resource-group: ${{env.AZURE_AKS_RG }}
+
+      # Create namespace if doesn't exist
+      - run: |
+          kubectl create namespace ${{ env.NAMESPACE }} --dry-run -o json | kubectl apply -f -
+
+      # Deploy app to AKS
+      - uses: azure/k8s-deploy@v1
+        with:
+          manifests: |
+            azure-vote-all-in-one-redis.yaml
+          namespace: ${{ env.NAMESPACE }}
