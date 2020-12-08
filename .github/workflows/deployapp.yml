@@ -17,9 +17,6 @@ on:
         default: 'vote'
         required: true 
 
-
-
-
 jobs:
   deploy:
     name: Deploy to AKS
@@ -42,5 +39,5 @@ jobs:
       - uses: azure/k8s-deploy@v1
         with:
           manifests: |
-            APP/votingapp.yaml
+            APP/votingapp.yml
           namespace: ${{  github.event.inputs.NAMESPACE }}
