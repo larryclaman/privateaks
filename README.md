@@ -52,7 +52,7 @@ Once the runner has been configured, you can use the included workflow to deploy
 
 1. Create a  Service Principal must be created & saved as a Secret called AZURE_AKS_CREDENTIALS prior to running the workflow; eg
 ```
-az ad sp create-for-rbac --sdk-auth
+az ad sp create-for-rbac --sdk-auth --skip-assignment 
 ```
 And, this Service Principal must be granted appropriate rights (eg, aks contributor) to the AKS cluster.
 
