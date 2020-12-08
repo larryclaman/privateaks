@@ -55,7 +55,7 @@ Once the runner has been configured, you can use the included workflow to deploy
 ```
 az ad sp create-for-rbac --sdk-auth --skip-assignment 
 ```
-And, this Service Principal must be granted appropriate rights (eg, aks contributor) to the AKS cluster.
+And, this Service Principal must be granted appropriate rights (eg, aks contributor) to the AKS cluster.  The simplest way to accomplish this is through the Azure portal.
 
 2. (Optionally) Change the defaults in the `deployapp.yml` file to reflect the resource group & AKS cluster name.  (If you don't change the defaults, you will need to enter them when you run the workflow.)
 3. Within your GitHub repo, browse to 'Actions', select the 'DeployToAKS' workflow, and then select the 'Run Workflow' button to manuall run this workflow.
