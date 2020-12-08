@@ -27,7 +27,7 @@ The arm template creates:
 3. Run either the `deploy.ps1` or the `deploy.sh` to deploy the resources to Azure.
 4. Once the script finishes, you will need to manually create an [Azure Bastion Service](https://docs.microsoft.com/en-us/azure/bastion/tutorial-create-host-portal) and attach it to the VNET that was just created.
 5. Once the Baston Service has been created, use it to ssh into the VM. NOTE:  by default, the username is _adminuser_; this is a parameter in the ARM template if you want to change it.
-6. On this VM, you will need to install any tooling that might be needed by the GitHub Runner agent.  This will likely include:
+6. For this lab, you will need to install Docker, the Azure cli, and kubectl as they are used by the GitHub Runner agent to run the sample workflow.
    - [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script):
         ```
         curl -fsSL https://get.docker.com -o get-docker.sh
@@ -41,6 +41,7 @@ The arm template creates:
       ```
       sudo az aks install-cli
       ```
+
 7. Install the Self Hosted GitHub Runner agent by following the steps on [this page](https://docs.github.com/en/free-pro-team@latest/actions/hosting-your-own-runners/adding-self-hosted-runners)
    - Follow the steps to add a self-hosted agent to a repository
    - Addtionally install the runner as a service (see https://docs.github.com/en/free-pro-team@latest/actions/hosting-your-own-runners/configuring-the-self-hosted-runner-application-as-a-service)
