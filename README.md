@@ -26,7 +26,7 @@ The arm template creates:
 2. In your favorite editor, edit the defaults in either the `deploy.ps1` (powershell) or the `deploy.sh` (bash).  Note you will need to create a new ssh key (using `ssh-keygen`) and then paste this into the variable in the deployment script.  Be sure to save the private key as you will need it later in order to ssh into the build server.
 3. Run either the `deploy.ps1` or the `deploy.sh` to deploy the resources to Azure.
 4. Once the script finishes, you will need to manually create an [Azure Bastion Service](https://docs.microsoft.com/en-us/azure/bastion/tutorial-create-host-portal) and attach it to the VNET that was just created.
-5. Once the Baston Service has been created, use it to ssh into the VM.
+5. Once the Baston Service has been created, use it to ssh into the VM. NOTE:  by default, the username is _adminuser_; this is a parameter in the ARM template if you want to change it.
 6. On this VM, you will need to install any tooling that might be needed by the GitHub Runner agent.  This will likely include:
    - [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script):
         ```
