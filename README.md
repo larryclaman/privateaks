@@ -26,16 +26,11 @@ The arm template creates:
 2. In your favorite editor, edit the defaults in either the `deploy.ps1` (powershell) or the `deploy.sh` (bash).  Note you will need to create a new ssh key (using `ssh-keygen`) and then paste this into the variable in the deployment script.  Be sure to save the private key as you will need it later in order to ssh into the build server.
 3. Run either the `deploy.ps1` or the `deploy.sh` to deploy the resources to Azure.
 4. Once the script finishes, you will need to manually create an [Azure Bastion Service](https://docs.microsoft.com/en-us/azure/bastion/tutorial-create-host-portal) and attach it to the VNET that was just created.
-5. Once the Baston Service has been created, use it to ssh into the VM. NOTE:  by default, the username is _adminuser_; this is a parameter in the ARM template if you want to change it.
-6. For this lab, you will need to install Docker, the Azure cli, and kubectl as they are used by the GitHub Runner agent to run the sample workflow.
+5. Once the Baston Service has been created, use it to ssh into the VM. NOTE:  by default, the username is _azureuser_; this is a parameter in the ARM template if you want to change it.
+6. For this lab, you will need to configure Docker and install kubectl as they are used by the GitHub Runner agent to run the sample workflow.
    - [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script):
-        ```
-        curl -fsSL https://get.docker.com -o get-docker.sh
-        sudo ./get-docker.sh
-        ```
-   - [Azure Cli](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-apt)
       ```
-      curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      sudo usermod -aG docker azureuser   # if you changed the username, replace <azureuser> with the username you configured in the arm template 
       ```
    - kubectl:
       ```
@@ -43,8 +38,8 @@ The arm template creates:
       ```
 
 7. Install the Self Hosted GitHub Runner agent by following the steps on [this page](https://docs.github.com/en/free-pro-team@latest/actions/hosting-your-own-runners/adding-self-hosted-runners)
-   - Follow the steps to add a self-hosted agent to a repository
-   - Addtionally install the runner as a service (see https://docs.github.com/en/free-pro-team@latest/actions/hosting-your-own-runners/configuring-the-self-hosted-runner-application-as-a-service)
+   - Follow the steps to described on the install page add a self-hosted agent to a repository
+   - Addtionally, you must configure the agent to run as a service:  https://docs.github.com/en/free-pro-team@latest/actions/hosting-your-own-runners/configuring-the-self-hosted-runner-application-as-a-service
 
 
 
