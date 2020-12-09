@@ -12,8 +12,10 @@ The arm template creates:
   - Cluster uses a system assign identity (MSI)
 - An Ubuntu server to be used as a GitHub runner.  Image is based on the Azure Data Science VM, as it already has the required tools installed.
   - VM is created with private IP only
+  - You will likely want to change the SSH key so that you can log into the VM (instructions below)
   - GitHub Runner self hosted build server needs to be manually installed per [instructions](https://docs.github.com/en/free-pro-team@latest/actions/hosting-your-own-runners/adding-self-hosted-runners)
-  - You will likely want to change the SSH key so that you can log into the VM
+  - The build server has minimal tooling.  If you want to use it beyond the scope of this lab, you will likely need to install additional tools and SDKS (Eg, dotnet, java, etc)  _Optional, and not needed for this lab_
+
 - A VNET with three subnets
   - vmsubnet - for vm deployment
   - akssubnet - for aks deployment
