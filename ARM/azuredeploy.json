@@ -61,6 +61,10 @@
         "vmusername": {
             "type": "string",
             "defaultValue": "azureuser"
+        },
+        "vmCustomData": {
+            "type": "string",
+            "defaultValue": "[base64('#!/bin/bash\nusermod -aG docker azureuser\naz aks install-cli')]"
         }
 
 
@@ -69,8 +73,6 @@
 
     "functions": [],
     "variables": {
-
-
 
         "dsvmimage": {
             "publisher": "microsoft-dsvm",
@@ -85,15 +87,12 @@
             "version": "latest"
         },
 
-
         "Owner": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
         "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
         "Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
 
         "akssubnetid": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetname'), parameters('akssubnetname'))]",
         "vmsubnetid": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetname'), parameters('vmsubnetname'))]"
-
-
     },
     "resources": [
 
@@ -171,6 +170,7 @@
                 "osProfile": {
                     "computerName": "[parameters('hostname')]",
                     "adminUsername": "[parameters('vmusername')]",
+                    "customData": "[parameters('vmCustomData')]",
                     "linuxConfiguration": {
                         "ssh": {
                             "publicKeys": [
