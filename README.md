@@ -46,15 +46,28 @@ The arm template creates:
 ## APP:  Deploy simple app to AKS cluster
 Once the runner has been configured, you can use the included workflow to deploy an app to the private cluster through the following steps:
 
-1. Create a  Service Principal must be created & saved as a Secret called AZURE_AKS_CREDENTIALS prior to running the workflow; eg
+1. You need to get the AKS cluster resource id:  (edit the cluster name & resouce group to match what you used)
 ```
-az ad sp create-for-rbac --sdk-auth --skip-assignment 
+az aks show -n aksCluster1 -g privateaks --output json
 ```
-And, this Service Principal must be granted appropriate rights (eg, aks contributor) to the AKS cluster.  The simplest way to accomplish this is through the Azure portal.
+2. Create a Service Principal with contributor access to the AKS cluster:
+```
+az ad sp create-for-rbac --sdk-auth --scope <id from step #1>
+```
+Note:  Here is a bash script that will automate the prior two steps for you. 
+```
+RG="privateaks"
+AKS="aksCluster1"
 
-2. (Optionally) Change the defaults in the `deployapp.yml` file to reflect the resource group & AKS cluster name.  (If you don't change the defaults, you will need to enter them when you run the workflow.)
-3. Within your GitHub repo, browse to 'Actions', select the 'DeployToAKS' workflow, and then select the 'Run Workflow' button to manuall run this workflow.
-4. The workflow will deploy the sample app to the cluster.  You can test this by running the following from a command line on the build server:
+AKSid=$(az aks show -n $AKS -g $RG --output tsv --query id)
+az ad sp create-for-rbac --sdk-auth --scope $AKSid --output json
+```
+
+3. Within your GitHub repo, create a Secret called AZURE_AKS_CREDENTIALS, and use the service principal json as the value of that secret.
+
+4. (Optional) If you've changed the default resource group or aks cluster, you can edit defaults found in the workflow file `deployapp.yml`  to reflect the resource group & AKS cluster name.  (If you don't change the defaults, you can enter them when you run the workflow.)
+5. Within your GitHub repo, browse to 'Actions', select the 'DeployToAKS' workflow, and then select the 'Run Workflow' button to manuall run this workflow.
+6. The workflow will deploy the sample app to the cluster.  You can test this by running the following from a command line on the build server:
 ```
 az aks get-credentials -n <AKSCLUSTERNAME> -g <RESOURCEGROUPNAME>  # one time only
 kubectl get all --namespace vote
