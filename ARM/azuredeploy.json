@@ -64,7 +64,11 @@
         },
         "vmCustomData": {
             "type": "string",
-            "defaultValue": "[base64('#!/bin/bash\nusermod -aG docker azureuser\naz aks install-cli')]"
+            "defaultValue": "[base64(concat(
+                '#!/bin/bash\n',
+                'usermod -aG docker ',parameters('vmusername'),'\n',
+                'az aks install-cli\n'
+                ))]"
         }
 
 
@@ -265,11 +269,14 @@
 
 
     "outputs": {
+        "aksname": {
+            "type": "string",
+            "value": "[parameters('aksClusterName')]"
+    },
         "aksid": {
             "type": "string",
             "value": "[resourceId('Microsoft.ContainerService/managedClusters', parameters('aksClusterName'))]"
         },
-
         "aksmsi": {
             "type": "string",
             "value": "[reference(resourceId('Microsoft.ContainerService/managedClusters', parameters('aksClusterName')),'2020-09-01','Full').identity.principalId]"
