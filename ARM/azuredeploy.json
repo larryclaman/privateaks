@@ -18,7 +18,7 @@
 
         "roleNameGuid": {
             "type": "string",
-            "defaultValue": "[newGuid()]",
+            "defaultValue": "[guid(resourceGroup().id)]",
             "metadata": {
                 "description": "guid for role assignment"
             }
@@ -144,6 +144,7 @@
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2019-11-01",
             "location": "[resourceGroup().location]",
+     //       "dependsOn": [ "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetname'))]" ],
             "properties": {
                 "ipConfigurations": [
                     {
@@ -151,7 +152,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "subnet": {
-                                "id": "[variables('vmsubnetid')]"
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetname'), parameters('vmsubnetname'))]"
                             }
                         }
                     }

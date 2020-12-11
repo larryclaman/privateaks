@@ -11,5 +11,5 @@ az deployment group create --resource-group $RG  -n aksdeploy --template-file az
 
 
 AKSid=$(az aks show -n $AKS -g $RG --output tsv --query id)
-echo "You will need to copy this Service Principal information into a GitHub Secret -- see inscructions"
+echo "You will need to copy this Service Principal information into a GitHub Secret -- see instructions"
 az ad sp create-for-rbac --sdk-auth --scope $AKSid --output json
