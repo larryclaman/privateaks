@@ -12,7 +12,6 @@ The arm template creates:
   - Cluster uses a system assigned identity (MSI)
 - An Ubuntu server to be used as a GitHub runner.  Image is based on the Azure Data Science VM, as it already has the required tools installed.
   - VM is created with private IP only
-  - You will likely want to change the SSH key so that you can log into the VM (instructions below)
   - GitHub Runner self hosted build server needs to be manually installed per [instructions](https://docs.github.com/en/free-pro-team@latest/actions/hosting-your-own-runners/adding-self-hosted-runners)
   - The build server has minimal tooling.  If you want to use it beyond the scope of this lab, you will likely need to install additional tools and SDKS (Eg, dotnet, java, etc)  _Optional, and not required for this lab_
 
@@ -37,11 +36,23 @@ The arm template creates:
 Once the runner has been configured, you can use the included workflow to deploy an app to the private cluster through the following steps:
 
 1. Within your GitHub repo, create a Secret called AZURE_AKS_CREDENTIALS, and use the service principal json created earlier as the value of that secret.
-
-2. (Optional) If you've changed the default resource group or aks cluster, you can edit defaults found in the workflow file `deployapp.yml`  to reflect the resource group & AKS cluster name.  (If you don't change the defaults, you can enter them when you run the workflow.)
-3. Within your GitHub repo, browse to 'Actions', select the 'DeployToAKS' workflow, and then select the 'Run Workflow' button to manuall run this workflow.
-4. The workflow will deploy the sample app to the cluster.  You can test this by running the following from a command line on the build server:
+2. To run the workflow, browse to 'Actions', select the 'DeployToAKS' workflow, and then select the 'Run Workflow' button to manually run this workflow.<p>
+If you've changed the default resource group or aks cluster name, you will need to override the defaults when you run the workflow:
+![workflowhighlight](media/workflow1.png)<p>
+Alternatively, you you can edit defaults found in the workflow file `deployapp.yml`
+```yaml
+      AZURE_AKS_RG: 
+        description: 'AKS Resource Group'
+        default: 'privateaks' # edit this if needed
+        required: true
+      AZURE_AKS_NAME: 
+        description: 'Name of AKS Cluster'
+        default: 'aksCluster1' # edit this if needed
+        required: true
 ```
+3. The workflow will deploy the sample app to the cluster.  You can test this by running the following from a command line on the build server:
+```bash
+# you will first need to run 'az login' if you haven't done so already
 az aks get-credentials -n <AKSCLUSTERNAME> -g <RESOURCEGROUPNAME>  # one time only
 kubectl get all --namespace vote
 ```

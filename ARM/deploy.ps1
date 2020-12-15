@@ -1,6 +1,6 @@
 # Powershell
 $ErrorActionPreference="Stop"
-$RG="privateaks1"
+$RG="privateaks"
 $AKS="aksCluster1"
 $LOCATION="EastUS2"
 $SSHKEYFILE="akslabkey1"
