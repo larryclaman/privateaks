@@ -36,7 +36,7 @@ The arm template creates:
 Once the runner has been configured, you can use the included workflow to deploy an app to the private cluster through the following steps:
 
 1. Within your GitHub repo, create a Secret called AZURE_AKS_CREDENTIALS, and use the service principal json created earlier as the value of that secret.
-2. To run the workflow, browse to 'Actions', select the 'DeployToAKS' workflow, and then select the 'Run Workflow' button to manually run this workflow.<p>
+2. To run the workflow, browse to 'Actions'.  You may get an approval request -- select "OK" to continue.  Select the 'DeployToAKS' workflow, and then select the 'Run Workflow' button to manually run this workflow.<p>
 If you've changed the default resource group or aks cluster name, you will need to override the defaults when you run the workflow:
 ![workflowhighlight](media/workflow1.png)<p>
 Alternatively, you you can edit defaults found in the workflow file `deployapp.yml`
