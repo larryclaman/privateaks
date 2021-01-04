@@ -1,10 +1,15 @@
 # Private AKS & GitHub runner
 
-This repo contains two main assets:  
+### Purpose / Scenario
+Enterprise Azure customers often have security controls requiring the use of a private AKS cluster (eg the cluster's API server has no public endpoints).  However, using a private cluster breaks existing continuous integration / continuous deployment (CICD) solutions unless one also deploys a private runner.
+
+This repo provides a working solution to this scenario.  It contains instructions and artifacts to easily and quickly deploy a demo that can be used as part of a broader customer discussion.
+
+There are two main assets in the repo:
 1) An ARM template to deploy a private private AKS cluster, a VM, and a VNET.  The VM will be used as a private GitHub runner
 2) A GitHub workflow that deploys a sample voting app to the private AKS cluster
 
-You will need to fork a copy of this repo into your own GitHub Account or Org.
+You will need to fork a copy of this repo into your own GitHub Account or Org prior to using it.
 
 ## ARM Template 
 The arm template creates:
@@ -23,10 +28,10 @@ The arm template creates:
 
 ### Deploying the ARM Template
 1. Clone the repo locally and then cd into the ARM folder.
-2. In your favorite editor, edit the defaults in either the `deploy.ps1` (powershell) or the `deploy.sh` (bash). 
-3. Run either the `deploy.ps1` or the `deploy.sh` to deploy the resources to Azure.  When this script runs for the first time, it will create an ssh key to be used with the deployment, and will ask for a passphrase.  You can just press 'return' to leave the passphrase blank.  At the end of the script it will create a service principal.   **Be sure to take note of the Service Principal that is created!**
+2. In your favorite editor, edit the defaults in either  `deploy.ps1` (powershell) or  `deploy.sh` (bash). 
+3. Run either `deploy.ps1` or `deploy.sh` to deploy the resources to Azure.  When this script runs for the first time, it will create an ssh key to be used with the deployment, and will ask for a passphrase.  You can just press 'return' to leave the passphrase blank.  At the end of the script it will create a service principal.   **Be sure to take note of the Service Principal that is created!**
 4. Once the script finishes, you will need to manually create an [Azure Bastion Service](https://docs.microsoft.com/en-us/azure/bastion/tutorial-create-host-portal) and attach it to the VNET that was just created.
-5. Once the Baston Service has been created, use it to ssh into the VM using the `akslabkey` ssh key that was created earlier. NOTE:  by default, the username is _azureuser_; this is a parameter in the ARM template if you want to change it.
+5. Once the Baston Service has been created, use it to ssh into the VM using the `akslabkey` ssh key that was created earlier. NOTE: by default, the username is _azureuser_; this is a parameter in the ARM template if you want to change it.
 6. Install the Self Hosted GitHub Runner agent by following the steps on [this page](https://docs.github.com/en/free-pro-team@latest/actions/hosting-your-own-runners/adding-self-hosted-runners)
    - Follow the steps to described on the install page add a self-hosted agent to a repository
    - Addtionally, you must configure the agent to run as a service:  https://docs.github.com/en/free-pro-team@latest/actions/hosting-your-own-runners/configuring-the-self-hosted-runner-application-as-a-service
